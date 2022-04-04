@@ -16,5 +16,6 @@ pip3 install -r requirements.txt
 Use python3 to run ***morse-utility***
 
 ```bash
+cd src
 python3 src/main.py
 ```
