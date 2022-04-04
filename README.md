@@ -12,10 +12,19 @@ cd morse-utility
 pip3 install -r requirements.txt
 ```
 
-# Launching
+# Usage 
 Use python3 to run ***morse-utility***
 
 ```bash
 cd src
 python3 src/main.py
 ```
+
+## Translation
+![translate](https://user-images.githubusercontent.com/45224503/161645686-b5c18ba9-4726-4975-ad12-572515292e94.gif)
+
+## Morse record
+![record](https://user-images.githubusercontent.com/45224503/161645588-801fa151-7995-4a44-9cf4-6b1590c45605.gif)
+
+## Settings page
+![settings](https://user-images.githubusercontent.com/45224503/161645509-b7b26593-684f-4139-be63-315be029fd27.png)
