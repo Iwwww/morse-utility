@@ -1,0 +1,19 @@
+<RCC>
+  <qresource prefix="img">
+    <file>ico/audiobook.png</file>
+    <file>ico/audiofile.png</file>
+    <file>ico/back.png</file>
+    <file>ico/Dictionary.png</file>
+    <file>ico/end.png</file>
+    <file>ico/high_volume.png</file>
+    <file>ico/morse_window.png</file>
+    <file>ico/mute.png</file>
+    <file>ico/normal_volume.png</file>
+    <file>ico/play.png</file>
+    <file>ico/playlist.png</file>
+    <file>ico/start.png</file>
+    <file>ico/stop.png</file>
+    <file>ico/videofile.png</file>
+    <file>ico/volume.png</file>
+  </qresource>
+</RCC>
