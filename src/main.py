@@ -1,16 +1,18 @@
-'''Morse Translator version 0.1
-Created by Mikhael Yolgin'''
+#!/bin/env python3
 
-from PyQt5 import QtWidgets, uic, QtGui, QtCore
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import QThread
+"""Morse Translator version 0.1
+Created by Mikhael Yolgin"""
 
 import sys
 import time
 
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5.QtCore import QThread
+from PyQt5.QtWidgets import QMessageBox
+
 import MorseTranslator as MT
-from MorseReader import playMorse
 from AudioGenerator import generate
+from MorseReader import playMorse
 
 
 class ReadMorseThread(QThread):
@@ -26,25 +28,28 @@ class ReadMorseThread(QThread):
             morse_text = "...- ...- ...- -...- " + morse_text + " -.-"
 
         try:
-            playMorse(morse_text,
-                      tone=self.parent.spinBox_soundFrequency.value(),
-                      level=self.parent.spinBox_soundLevel.value(),
-                      small_duration=self.parent.spinBox_soundSmallDuration.value(),
-                      middle_duration=self.parent.spinBox_soundMiddleDuration.value(),
-                      small_pause=self.parent.spinBox_soundSmallPause.value(),
-                      middle_pause=self.parent.spinBox_soundMiddlePause.value(),
-                      big_pause=self.parent.spinBox_soundBigPause.value())
+            playMorse(
+                morse_text,
+                tone=self.parent.spinBox_soundFrequency.value(),
+                level=self.parent.spinBox_soundLevel.value(),
+                small_duration=self.parent.spinBox_soundSmallDuration.value(),
+                middle_duration=self.parent.spinBox_soundMiddleDuration.value(),
+                small_pause=self.parent.spinBox_soundSmallPause.value(),
+                middle_pause=self.parent.spinBox_soundMiddlePause.value(),
+                big_pause=self.parent.spinBox_soundBigPause.value(),
+            )
 
         except:
             pass
-        '''
+        """
         small_duration=100,
         middle_duration=300,
         small_pause=50,
         middle_pause=250,
         big_pause=500,
         tone=500,
-        '''
+        """
+
 
 class GenetarteSound(QThread):
     def __init__(self, parent=None):
@@ -65,15 +70,16 @@ class GenetarteSound(QThread):
     #     self.quit()
     #     # quit()
 
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
-        super(MainWindow,self).__init__()
+        super(MainWindow, self).__init__()
         uic.loadUi("morse_UI.ui", self)
         self.connectUi()
         self.show()
 
-        self.text_to_morse = ''
-        self.morse_to_text = ''
+        self.text_to_morse = ""
+        self.morse_to_text = ""
 
         self.readMorse_instance = ReadMorseThread(parent=self)
 
@@ -95,7 +101,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actionAbout.triggered.connect(self.dialogAbout)
         self.actionExit.triggered.connect(self.close)
 
-
     def btn_Input_onPress(self):
         self.start_time = time.time()
 
@@ -108,7 +113,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         except Exception as e:
             print(e)
-
 
     def morseRecognition(self, pressed_time, unpressed_time):
 
@@ -124,38 +128,42 @@ class MainWindow(QtWidgets.QMainWindow):
         # Calculate press duration for SPACE and SEPARATOTR
         try:
             self.duration_last_unpressed_time = pressed_time - self.last_unpressed_time
-            print("duration form last unpressed time:", self.duration_last_unpressed_time)
+            print(
+                "duration form last unpressed time:", self.duration_last_unpressed_time
+            )
 
         except:
             pass
 
         # Add space and separator
         try:
-            if self.duration_last_unpressed_time >= space_duraction and self.duration_last_unpressed_time < separate_duration:
+            if (
+                self.duration_last_unpressed_time >= space_duraction
+                and self.duration_last_unpressed_time < separate_duration
+            ):
                 print("' '")
-                self.addMorseText(' ')
+                self.addMorseText(" ")
 
             elif self.duration_last_unpressed_time > separate_duration:
-                print(' / ')
-                self.addMorseText(' / ')
+                print(" / ")
+                self.addMorseText(" / ")
         except:
             pass
 
         # Add dot and minus
         if duration_time <= short_duration:
             print(".")
-            self.addMorseText('.')
+            self.addMorseText(".")
 
         elif duration_time > short_duration:
             print("-")
-            self.addMorseText('-')
+            self.addMorseText("-")
 
         self.last_unpressed_time = unpressed_time
 
-
     def addMorseText(self, text):
         morse = self.lineEdit_Morse.text()
-        self.lineEdit_Morse.setText(morse + str(text) )
+        self.lineEdit_Morse.setText(morse + str(text))
 
     def textChanged(self):
         try:
@@ -182,21 +190,20 @@ class MainWindow(QtWidgets.QMainWindow):
         except Exception as e:
             print(e)
 
-
         morse_in_line = self.lineEdit_Morse.text()
 
         # Вкл\Выкл кнопку "Воспроизвести" и очиска поля текса
-        if morse_in_line == '':
+        if morse_in_line == "":
             self.btn_Play.setEnabled(False)
-            self.lineEdit_Text.setText('')
+            self.lineEdit_Text.setText("")
         else:
             self.btn_Play.setEnabled(True)
 
         if morse_in_line != self.text_to_morse:
             # Чистим от знаков
             for sing in morse_in_line:
-                if sing != '-' and sing != '.' and sing != ' ' and sing != '/':
-                    morse_in_line = morse_in_line.replace(sing, '')
+                if sing != "-" and sing != "." and sing != " " and sing != "/":
+                    morse_in_line = morse_in_line.replace(sing, "")
 
             self.lineEdit_Morse.setText(morse_in_line)
 
@@ -212,7 +219,11 @@ class MainWindow(QtWidgets.QMainWindow):
     # UI Metods
 
     def dialogAbout(self):
-        QMessageBox.about(self, "О Morse Translator", "Morse Translator — это программа для перевода текста в морзе и морзе в текст\n\nВерсия 0.1")
+        QMessageBox.about(
+            self,
+            "О Morse Translator",
+            "Morse Translator — это программа для перевода текста в морзе и морзе в текст\n\nВерсия 0.1",
+        )
 
     def dialogCritical(self, message):
         dlg = QMessageBox(self)
@@ -220,7 +231,9 @@ class MainWindow(QtWidgets.QMainWindow):
         dlg.setIcon(QMessageBox.Critical)
         dlg.show()
 
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
     app.exec_()
+
